@@ -5,29 +5,28 @@
 # 1. Parse XML, retrieve all book titles / authors / 
 """
 
-import rdflib
 from os import chdir
-import epub
 chdir("D:\cygwinfolders\gutenberg-generated")
+import epub_conversion
+from epub_conversion.utils import open_book
 
-book = epub.open_epub(r'D:\cygwinfolders\gutenberg-generated\25060\pg25060.epub')
+book = open_book(r'D:\cygwinfolders\gutenberg-generated\25014\pg25014.epub')
+
+lines = epub_conversion.converter.convert_epub_to_lines(book)
+
+"""
+from ebooklib import epub
+book = epub.read_epub(r'D:\cygwinfolders\gutenberg-generated\25014\pg25014.epub')
+book._id_html
+for i in book.get_items:
+    print(i)
+"""
+
+"""
+import epub
+book = epub.open_epub(r'D:\cygwinfolders\gutenberg-generated\25014\pg25014.epub')
 
 for item in book.opf.manifest.values():
     # read the content
     data = book.read_item(item)
 """
-g=rdflib.Graph()
-g.load(r'D:\cygwinfolders\gutenberg-generated\25060\pg25060.rdf')
-
-print("graph has %s statements." % len(g))
-
-
-import pprint
-for stmt in g:
-    pprint.pprint(stmt)
-
-for subj, pred, obj in g:
-   if (subj, pred, obj) not in g:
-       raise Exception("It better be!")
-   print("{} ###### {}".format(pred,obj))
- """
