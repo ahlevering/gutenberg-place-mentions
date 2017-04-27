@@ -5,10 +5,10 @@ Contains all scripts that analyze the e-pub file one way or the other
 ## Script retrieved from the following location:
 ## http://stackoverflow.com/questions/3114786/python-library-to-extract-epub-information
 
-import zipfile
-from lxml import etree
-
 def get_epub_metadata(fname):
+    import zipfile
+    from lxml import etree
+    
     ns = {
         'n':'urn:oasis:names:tc:opendocument:xmlns:container',
         'pkg':'http://www.idpf.org/2007/opf',
@@ -39,7 +39,9 @@ def process_text_in_ebook(path):
     import epub_conversion
     from epub_conversion.utils import open_book
     
-    book = open_book(path)
+    book_number = path.split("\\")[-1]
+    
+    book = open_book("{}\pg{}.epub".format(path, book_number))
     lines = epub_conversion.converter.convert_epub_to_lines(book)
     return lines
 
