@@ -33,6 +33,59 @@ def create_postgis_extension(dbname, user, password):
     cur.close()
     con.close()
 
+
+class database_operations:
+    def __init__(self):
+        import psycopg2
+   
+    def set_database_credentials(self,user, password):
+        self.user = user
+        self.password = password
+    
+    def connect_to_default_database(self, default_database_name):
+        try:    
+            self.default_db_con = self.psycopg2.connect("dbname={} user={} password={}".format(default_database_name, self.user, self.password))
+            self.default_db_con.set_isolation_level(self.psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+            self.default_db_cur = self.default_db_con.cursor()
+        except:
+            print("Unable to connect to the database or set the isolation level")
+    
+    def set_project_database_name(self, project_database_name):
+        self.project_database_name = project_database_name
+    
+    def create_project_database(self):
+        try:
+            insert_query = """CREATE DATABASE {dbname};""".format(dbname = self.project_database_name)
+            self.default_db_cur.execute(insert_query)
+            self.default_db_con.commit()
+        except:
+            print("Failed to create database. It might already exist or you do not have the rights to make a new database.")
+            
+    def close_default_db_connection(self):
+        self.default_db_cur.close()
+        self.default_db_con.close()
+
+    def connect_to_project_database(self):
+        self.con = self.psycopg2.connect("dbname={} user={} password={}".format(self.project_database_name, self.user, self.password))
+        self.cur = self.con.cursor()
+    
+    def create_project_database_postgis_extension(self):
+        try:
+            insert_query = """CREATE EXTENSION PostGIS;"""
+            self.cur.execute(insert_query)
+            self.con.commit()
+        except:
+            print("Extension PostGIS already exists, or PostGIS is not installed")
+    
+    def query_project_database(self, query):
+        insert_query = """CREATE DATABASE {dbname};""".format(dbname = self.project_database_name)
+        self.cur.execute(insert_query)
+        self.con.commit()
+    
+    def close_project_database_connection(self):
+        self.cur.close()
+        self.con.close()
+
 def create_country_table(dbname, user, password, table_name, overwrite = False):
     import psycopg2
     con = psycopg2.connect("dbname={} user={} password={}".format(dbname, user, password))
@@ -101,4 +154,4 @@ if __name__ == "__main__":
             self.assertEqual(get_epub_metadata(r'D:\cygwinfolders\gutenberg-generated\1\pg1.epub')['title'], 'The Declaration of Independence of the United States of America')
         def test_creator(self):
             self.assertEqual(get_epub_metadata(r'D:\cygwinfolders\gutenberg-generated\1\pg1.epub')['creator'], 'Thomas Jefferson')
-unittest.main()
+    unittest.main()
