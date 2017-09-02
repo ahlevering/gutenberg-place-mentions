@@ -9,7 +9,7 @@ def create_database(default_dbname, new_dbname, user, password):
         con = psycopg2.connect("dbname={} user={} password={}".format(default_dbname, user, password))
         con.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
         cur = con.cursor()
-    except:
+    except Exception as e:
         print("Unable to connect to the database or set the isolation level")
     try:
         insert_query = """CREATE DATABASE {dbname};""".format(dbname = new_dbname)
