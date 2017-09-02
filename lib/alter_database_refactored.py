@@ -121,14 +121,14 @@ class database_operations:
                 self.insert_location_row(location_row)
         
     def insert_location_row(self, location_table_row):
-        location_row_query =  """INSERT INTO {tablename} VALUES(""".format(tablename = self.location_table_name)
-        syntaxed_entries = [str("'" + str(entry) + "',") for entry in location_table_row]
-        for i,entry in enumerate(syntaxed_entries):
-            if entry == "'',":
-                entry = "DEFAULT,"
-            location_row_query += entry
-        location_row_query = location_row_query[:-1] + ") ON CONFLICT (geonameid) DO NOTHING;" #Stripping last comma
-        self.execute_query(location_row_query)
+        location_row_query =  """INSERT INTO {tablename} VALUES (""".format(tablename = self.location_table_name)
+        for i, entry in enumerate(location_table_row):
+            location_row_query += "%s, "
+            if entry == "":
+                location_table_row[i] = "-9999"
+        
+        location_row_query = location_row_query[:-2] + ") ON CONFLICT (geonameid) DO NOTHING;" #Stripping last comma
+        self.execute_query(location_row_query, location_table_row)
             
             
             
