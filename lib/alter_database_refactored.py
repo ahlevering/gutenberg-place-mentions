@@ -97,20 +97,20 @@ class database_operations:
                             alternatenames      varchar(10000),
                             latitude            decimal,
                             longitude           decimal, 
-                            featureclass        varchar(1),
+                            featureclass        varchar(5),
                             featurecode         varchar(10),
-                            countrycode	        varchar(2),
+                            countrycode	        varchar(10),
                             alternatecc         varchar(200),
                             admin1code	        varchar(80),
-                            admin2code	        varchar(40),
+                            admin2code	        varchar(80),
                             admin3code	        varchar(20),
                             admin4code	        varchar(20),
                             elevation           integer,
                             dem                 integer,
                             population          integer,
-                            timezone            varchar(40),
+                            timezone            varchar(80),
                             modificationdate    date,
-                            CONSTRAINT geoidentifier PRIMARY KEY(geonameid)
+                            CONSTRAINT geoidentifier_{table_name} PRIMARY KEY(geonameid)
                             );""".format(table_name = self.location_table_name)
         self.execute_query(country_lut_query)
     

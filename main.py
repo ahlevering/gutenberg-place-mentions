@@ -31,9 +31,9 @@ if __name__ == "__main__":
     gutenberg_db.create_project_database_postgis_extension()
     
     ## Create database for location data ##
-    gutenberg_db.set_location_table_name(location_table_name = "location_lut")
+    gutenberg_db.set_location_table_name(location_table_name = "location_lut_1000")
     gutenberg_db.create_location_table(overwrite = True)
-    gutenberg_db.insert_location_file(location_file_name = "D:/git/gutenberg/data/allCountries.txt")
+    gutenberg_db.insert_location_file(location_file_name = "D:/git/gutenberg/data/cities1000.txt")
     
     
     
