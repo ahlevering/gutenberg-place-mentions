@@ -1,0 +1,1 @@
+rsync -av --del --exclude '*.mobi' --exclude '*.html.utf8' --exclude '*.rdf' --exclude '*.txt.utf8' --exclude '*.qrcode.png' --exclude '*.qrcode.mobile.png' --exclude '*.qrcode.desktop.png' --exclude '*.plucker' --exclude '*.gzip' --exclude '*.converter.log' ftp@ftp.ibiblio.org::gutenberg-epub /gutenberg-generated

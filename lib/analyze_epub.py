@@ -27,12 +27,12 @@ def get_epub_metadata(fname):
     cf = zip.read(cfname)
     tree = etree.fromstring(cf)
     p = tree.xpath('/pkg:package/pkg:metadata',namespaces=ns)[0]
-
+    
     # repackage the data
     res = {}
     for s in ['title','language','creator','date','identifier']:
         res[s] = p.xpath('dc:%s/text()'%(s),namespaces=ns)[0]
-
+        print(res[s])
     return res
 
 def process_text_in_ebook(path):
@@ -52,7 +52,9 @@ if __name__ == "__main__":
         import unittest
         
         def test_title(self):
-            self.assertEqual(get_epub_metadata(r'D:\cygwinfolders\gutenberg-generated\1\pg1.epub')['title'], 'The Declaration of Independence of the United States of America')
+            self.assertEqual(get_epub_metadata(r'D:\cygwinfolders\gutenberg-generated\1013\pg1013.epub')['title'], 'The Declaration of Independence of the United States of America')
         def test_creator(self):
             self.assertEqual(get_epub_metadata(r'D:\cygwinfolders\gutenberg-generated\1\pg1.epub')['creator'], 'Thomas Jefferson')
     unittest.main()
+    
+    

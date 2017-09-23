@@ -121,48 +121,31 @@ class database_operations:
                 self.insert_location_row(location_row)
         
     def insert_location_row(self, location_table_row):
-        location_row_query =  """INSERT INTO {tablename} VALUES (""".format(tablename = self.location_table_name)
-        for i, entry in enumerate(location_table_row):
-            location_row_query += "%s, "
-            if entry == "":
-                location_table_row[i] = "-9999"
-        
+        location_row_query = self.construct_query(self.location_table_name)
         location_row_query = location_row_query[:-2] + ") ON CONFLICT (geonameid) DO NOTHING;" #Stripping last comma
         self.execute_query(location_row_query, location_table_row)
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+    def construct_query(self, target_table, row):
+        row_query =  """INSERT INTO {tablename} VALUES (""".format(tablename = target_table)
+        for i, entry in enumerate(row_query):
+            row_query += "%s, "
+            if entry == "":
+                row_query[i] = "-9999"
+        return row_query        
+
     def set_gutenberg_table_name(self, gutenberg_table_name):
         self.gutenberg_table_name = gutenberg_table_name
         
-    def create_gutenberg_table(self, overwrite = False):
+    def create_book_metadata_table(self, overwrite = False):
         if overwrite == True:
             del_table_query = """DROP TABLE IF EXISTS {table_name};""".format(table_name = self.gutenberg_table_name)
             self.cur.execute(del_table_query)
             
         gutenberg_table_query = """CREATE TABLE IF NOT EXISTS {table_name} (
                         id  	bigint,
-                        time	varchar(50),
-                        latitude	decimal,
-                        longitude	decimal,
-                        selfrepcity varchar(500),    
-                        lang	varchar(10),
-                        source	varchar(250),
-                        countrycode	varchar(10),
-                        countryname	varchar(250),
-                        location	varchar(250),
-                        url	varchar(100),
-                        text        varchar(500),
-                        loclat   decimal,
-                        loclong  decimal);
+                        author	varchar(50),
+                        year	int(4),
+                        title	varchar(200),
                     """.format(table_name = self.gutenberg_table_name)
         self.execute_query(gutenberg_table_query)
 
